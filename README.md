@@ -1,4 +1,4 @@
-<h2 align="center">Register/Login App</h2>
+<h1 align="center">Register/Login App</h1>
 
 <div align="center">
 
