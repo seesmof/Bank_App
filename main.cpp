@@ -1,146 +1,193 @@
 // include necessary libraries
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-int balance = rand() % 1000;
+struct userData
+{
+    string name;
+    int age;
+    string password;
+    long double balance;
+};
 
-void showBalance();
+// function prototypes //
+void showBalance(long double balance)
+{
+    cout << "\nYour current balance is $" << balance << "\n";
+    return;
+}
+/////////////////////////
 
 // declare main function
-int main(int argc, char **argv)
+int main()
 {
-    // output program intro
-    cout << endl;
-    cout << "****************************** Skyline Bank *************************************" << endl
-         << endl;
-
+    // declare local variables //
     srand(time(NULL));
-    int amount;
-    char confirmation;
+    char doContinue, userDecision;
+    vector<userData> user(4);
+    int userIndex, sessionNumber = 0;
+    string userHolder, passHolder;
+    bool doRemember = false;
+    /////////////////////////////
 
-    int choise;
-    cout << "Welcome to Skyline Bank!" << endl
-         << endl;
+    // project intro
+    cout << "\n/////////////////////////////////////////////////////////////\n"
+         << "\nWelcome to Skyline Bank!\n"
+         << "\n/////////////////////////////////////////////////////////////\n\n";
     do
     {
-        cout << "What operation would you like to do?" << endl;
-        cout << "1 for Money Operations | 2 for Loans | 3 for Stock Market" << endl;
-        cout << "Enter: ";
-        cin >> choise;
-        if (choise == 1)
+        //////////////////////////////////////////////////////////////////////////////////
+        cout << "Do you already have an account? (Y | N) ";
+        cin >> userDecision;
+
+        string tempName, tempPassword;
+        if (userDecision == 'N' || userDecision == 'n')
         {
-            cout << endl;
-            cout << "1 for Money Deposit | 2 for Money Withdrawal" << endl;
-            cout << "Enter: ";
-            cin >> choise;
-            if (choise == 1)
+            cout << "\nWould you like to register? (Y | N) ";
+            cin >> userDecision;
+
+            if (userDecision == 'N' || userDecision == 'n')
             {
-                cout << endl;
-                showBalance();
-                cout << "Enter a sum you would like to deposit: $";
-                cin >> amount;
-                cout << "Are you sure you want to deposit $" << amount << " to your account? (Y / N): ";
-                cin >> confirmation;
-                if (confirmation == 'y' || confirmation == 'Y')
+                cout << "\nThanks for using this program\n"
+                     << "\n/////////////////////////////////////////////////////////////\n\n";
+                break;
+            }
+
+            userIndex = sessionNumber;
+            cout << "\nEnter your name: ";
+            cin >> user.at(userIndex).name;
+            cout << "Enter your full age: ";
+            cin >> user.at(userIndex).age;
+            int age = (int)user.at(userIndex).age;
+            if (age < 18)
+            {
+                cout << "\nUnfortunately, you are not allowed to have an account yet.\n";
+                break;
+            }
+            cout << "Enter your password: ";
+            cin >> user.at(userIndex).password;
+
+            cout << "\nCongratulations, " << user.at(userIndex).name << ", you have successfully created a new account!\n";
+            cout << "As a bonus, you will recieve $50 to your account!\n";
+            user.at(userIndex).balance += 50.0;
+
+            userHolder = user.at(userIndex).name;
+            passHolder = user.at(userIndex).password;
+        }
+        else if (userDecision == 'Y' || userDecision == 'y')
+        {
+            cout << "\nPlease enter your username: ";
+            cin >> tempName;
+            cout << "Please enter your password: ";
+            cin >> tempPassword;
+
+            bool isFoundName, isCorrectPassword;
+            int j;
+            for (j = 0; j < user.size(); j++)
+            {
+                if (user.at(j).name == tempName || tempName == userHolder)
                 {
-                    cout << endl;
-                    balance += amount;
-                    cout << "Congratulations! You have successfully depositted $" << amount << " into your account." << endl;
-                    cout << "Would you like to continue? (Y / N): ";
-                    cin >> confirmation;
-                    if (confirmation == 'y' || confirmation == 'Y')
+                    isFoundName = true;
+
+                    if (tempPassword == passHolder)
                     {
-                        cout << endl;
-                        continue;
+                        isCorrectPassword = true;
+                        break;
                     }
-                    else
+                    else if (user.at(j).password == tempPassword)
                     {
+                        isCorrectPassword = true;
+                        break;
+                    }
+                    else if (user.at(j).password != tempPassword)
+                    {
+                        isCorrectPassword = false;
                         break;
                     }
                 }
-                else
-                {
-                    cout << endl;
-                    cout << "Operation cancelled. If you did it by acident, please try again." << endl
-                         << endl;
-                    continue;
-                }
             }
-            else if (choise == 2)
+
+            if (isFoundName && isCorrectPassword)
             {
-                cout << endl;
-                showBalance();
-                cout << "How much money would you like to withdraw?: $";
-                cin >> amount;
-                cout << "Are you sure you want to withdraw $" << amount << " from your account? (Y / N): ";
-                cin >> confirmation;
-                if (amount <= balance)
-                {
-                    if (confirmation == 'Y' || confirmation == 'y')
-                    {
-                        cout << endl;
-                        balance -= amount;
-                        cout << "Congratulations! You successfully withdrew $" << amount << " from your wallet." << endl;
-                        cout << "Your current balance is $" << balance << endl;
-                        cout << "Would you like to continue? (Y / N): ";
-                        cin >> confirmation;
-                        if (confirmation == 'y' || confirmation == 'Y')
-                        {
-                            cout << endl;
-                            continue;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    cout << endl;
-                    cout << "Oops! You don't have sufficient funds to complete the transaction, try again later." << endl
-                         << endl;
-                    continue;
-                }
-            }
-        }
-        else if (choise == 2)
-        {
-            cout << endl;
-            cout << "Oops! This section is under development :(" << endl;
-        }
-        else if (choise == 3)
-        {
-            cout << endl;
-            cout << "Oops! This section is under development :(" << endl;
-        }
-        else
-        {
-            cout << endl;
-            cout << "You entered an invalid choice, would you like to continue? (Y / N): ";
-            cin >> confirmation;
-            if (confirmation == 'y' || confirmation == 'Y')
-            {
-                cout << endl;
-                continue;
+                cout << "\nWelcome back, " << tempName << "!\n";
+                userIndex == j;
+
+                userHolder = user.at(userIndex).name;
+                passHolder = user.at(userIndex).password;
             }
             else
             {
-                break;
+                if (!isCorrectPassword)
+                {
+                    cout << "\nIncorrect password\n";
+                    break;
+                }
             }
         }
-    } while (choise != 0);
 
-    // output project outro
-    cout << endl;
-    cout << "**********************************************************************************" << endl
-         << endl;
+        int choice;
+        cout << "\n\nWhat operation would you like to perform?\n";
+        cout << "1 for money | 2 for credit | 3 for stocks\n";
+        cout << "Enter: ";
+        cin >> choice;
+
+        if (choice == 1)
+        {
+            cout << "\nWhat exactly would you like to do?\n";
+            cout << "1 to deposit | 2 to withdraw\n";
+            cout << "Enter: ";
+            cin >> choice;
+
+            if (choice == 1)
+            {
+                showBalance(user.at(userIndex).balance);
+                double amount;
+                cout << "\nWhat amount would you like to deposit? ";
+                cin >> amount;
+
+                cout << "Are you sure you want to deposit $" << amount << "? (Y | N) ";
+                cin >> doContinue;
+
+                if (doContinue == 'N' || doContinue == 'n')
+                    break;
+
+                user.at(userIndex).balance += amount;
+                cout << "\nCongratulations! You have successfully deposited $" << amount << " to your account.";
+                showBalance(user.at(userIndex).balance);
+            }
+            else if (choice == 2)
+            {
+                showBalance(user.at(userIndex).balance);
+                double amount;
+                cout << "\nWhat amount would you like to withdraw? ";
+                cin >> amount;
+
+                if (amount > user.at(userIndex).balance)
+                {
+                    cout << "\nYou cannot withdraw more than $" << user.at(userIndex).balance << ".\n";
+                    break;
+                }
+
+                user.at(userIndex).balance -= amount;
+                cout << "Congratulations! You have been successfully withdrew $" << amount << " from your account.";
+                showBalance(user.at(userIndex).balance);
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////////////
+        cout << "\n/////////////////////////////////////////////////////////////\n"
+             << "\nWould you like to continue program execution? (Y | N): ";
+        cin >> doContinue;
+        if (doContinue == 'Y' || doContinue == 'y')
+        {
+            cout << "\n/////////////////////////////////////////////////////////////\n\n";
+            continue;
+        }
+        else
+            break;
+    } while (doContinue = 'Y' || doContinue == 'y');
+    cout << "\nThanks for using this program\n"
+         << "\n/////////////////////////////////////////////////////////////\n\n";
 
     // end main function
     return 0;
-}
-
-void showBalance()
-{
-    cout << "Your current balance is $" << balance << endl;
 }
